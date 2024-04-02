@@ -1,6 +1,7 @@
 import yargs from 'yargs'
 import { hideBin } from 'yargs/helpers'
 import { newNote, getAllNotes, findNotes, removeNote, removeAllNotes } from './notes.js'
+import { start } from './server.js';
 // this should be on a separate utils.js file but Scott was to lazy to do that
 const listNotes = notes => {
   notes.forEach(({id, content, tags}) => {
@@ -57,7 +58,8 @@ yargs(hideBin(process.argv))
         type: 'number'
       })
   }, async (argv) => {
-    
+    const notes = await getAllNotes()
+    start(notes, argv.port)
   })
   .command('clean', 'remove all notes', () => {}, async (argv) => {
     await removeAllNotes()
